@@ -1,0 +1,288 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@section Estilos {
+    <link href="~/lib/datatables2/css/datatables.datatables.css" rel="stylesheet" />
+
+}
+<h2 class="mt-4 mb-4">Antecedentes</h2>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-chart-bar me-1"></i>
+               Control de antecedentes
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <button class="btn btn-outline-success" id="btnNuevoAntecedente">Nuevo antecedente</button>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="display" id="tbAntecedente" cellspacing="0" style="width:100%">
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdAntecedente" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Antecedente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Documento (CI/RUT)):</label>
+                        <input type="text" class="form-control" id="txtDocumento" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                      @*  <label class="col-form-label">Estado:</label>
+                        <input type="text" class="form-control" id="txtEstado" autocomplete="off" readonly>*@
+                    </div>
+                </div>
+                 <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Comentario:</label>
+                      
+                    </div>
+
+                </div>
+                <div class="row">@*
+                    <div class="col-sm-6">
+                        <label class="col-form-label">BCU:</label>
+                        <input type="text" class="form-control" id="txtResultadoBCU" autocomplete="off" readonly>
+                    </div> 
+                    <div class="col-sm-6">
+                        <label class="col-form-label">BCU:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="txtResultadoBCU" autocomplete="off" readonly>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" onclick="downloadFunction()">
+                                    <i class="fas fa-download"></i> 
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label class="col-form-label">DGI:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="txtResultadoDGI" autocomplete="off" readonly>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" onclick="downloadFunction()">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>*@
+                   @*  <div class="col-sm-6">
+                        <label class="col-form-label">DGI:</label>
+                        <input type="text" class="form-control" id="txtResultadoDGI" autocomplete="off" readonly>
+                    </div> *@
+                </div>
+                <div class="row">
+                    @* <div class="col-sm-6">
+                        <label class="col-form-label">Clearing:</label>
+                        <input type="text" class="form-control" id="txtResultadoClearing" autocomplete="off" readonly>
+                    </div> 
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Clearing:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="txtResultadoClearing" autocomplete="off" readonly>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" onclick="downloadFunction()">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Otro:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="txtResultadoOtro" autocomplete="off" readonly>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" onclick="downloadFunction()">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>*@
+                    @* <div class="col-sm-6">
+                        <label class="col-form-label">Otros:</label>
+                        <input type="text" class="form-control" id="txtResultadoOtro" autocomplete="off" readonly>
+                    </div> *@
+                </div>
+                <div class="row">
+
+                    <p>
+                        <br />
+                        <i class="fas fa-dollar-sign me-1"></i>
+                        <b> Metricas financieras (USD)</b>
+                        <br />
+                        Puedes llegar un control de la solicitud del cliente
+                    </p>
+
+
+
+                    <div class="col-sm-6">
+                        <label class="col-form-label"> Cantidad de unidades:</label>
+                        <input type="text" class="form-control" id="txtCantidadAntecedentes" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Valor total (USD):</label>
+                        <input type="text" class="form-control" id="txtValorAntecedentes" autocomplete="off">
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="mdAntecedente" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Antecedente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Documento (CI/RUT)):</label>
+                        <input type="text" class="form-control" id="txtDocumento" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        @*  <label class="col-form-label">Estado:</label>
+                        <input type="text" class="form-control" id="txtEstado" autocomplete="off" readonly>*@
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Comentario:</label>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">BCU:</label>
+                        <input type="text" class="form-control" id="txtResultadoBCU" autocomplete="off" readonly>
+                    </div> 
+                    <div class="col-sm-6">
+                        <label class="col-form-label">BCU:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="txtResultadoBCU" autocomplete="off" readonly>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" onclick="downloadFunction()">
+                                    <i class="fas fa-download"></i> 
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label class="col-form-label">DGI:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="txtResultadoDGI" autocomplete="off" readonly>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" onclick="downloadFunction()">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    @*  <div class="col-sm-6">
+                        <label class="col-form-label">DGI:</label>
+                        <input type="text" class="form-control" id="txtResultadoDGI" autocomplete="off" readonly>
+                    </div> *@
+                </div>
+                <div class="row">
+                     <div class="col-sm-6">
+                        <label class="col-form-label">Clearing:</label>
+                        <input type="text" class="form-control" id="txtResultadoClearing" autocomplete="off" readonly>
+                    </div> 
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Clearing:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="txtResultadoClearing" autocomplete="off" readonly>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" onclick="downloadFunction()">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Otro:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="txtResultadoOtro" autocomplete="off" readonly>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" onclick="downloadFunction()">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    @* <div class="col-sm-6">
+                        <label class="col-form-label">Otros:</label>
+                        <input type="text" class="form-control" id="txtResultadoOtro" autocomplete="off" readonly>
+                    </div> *@
+                </div>
+                <div class="row">
+
+                    <p>
+                        <br />
+                        <i class="fas fa-dollar-sign me-1"></i>
+                        <b> Metricas financieras (USD)</b>
+                        <br />
+                        Puedes llegar un control de la solicitud del cliente
+                    </p>
+
+
+
+                    <div class="col-sm-6">
+                        <label class="col-form-label"> Cantidad de unidades:</label>
+                        <input type="text" class="form-control" id="txtCantidadAntecedentes" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Valor total (USD):</label>
+                        <input type="text" class="form-control" id="txtValorAntecedentes" autocomplete="off">
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/lib/datatables2/js/moment.min.js"></script>
+    <script src="~/lib/datatables2/js/datatables.js"></script>
+    <script src="~/lib/select2/js/select2.min.js"></script>
+
+    <script src="~/Views/Antecedente/Antecedente.js"></script>
+    
+}

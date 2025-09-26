@@ -1,0 +1,104 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="row">
+<h3>Análisis general</h3>
+</div>
+<div class="row">
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-info text-white mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="me-3">
+                        <h4 class="text-white-75 small">Controles de Campo realizados</h4>
+                        <h2 class="text-lg fw-bold" id="htotalControlCampo">1</h2>
+                    </div>
+                    <i class="fa-solid fa-book fa-2xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-primary text-white mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="me-3">
+                        <h4 class="text-white-75 small">Monitoreos activos</h4>
+                        <h2 class="text-lg fw-bold" id="htotalAlertasActivas">1</h2>
+                    </div>
+                    <i class="fa-solid fa-user-group fa-2xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-warning text-white mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="me-3">
+                        <h4 class="text-white-75 small">Admisiones gestionadas</h4>
+                        <h2 class="text-lg fw-bold" id="htotalAntecedentes">1</h2>
+                    </div>
+                    <i class="fa-solid fa-repeat fa-2xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-success text-white mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="me-3">
+                        <h4 class="text-white-75 small">Controles en Proceso</h4>
+                        <h2 class="text-lg fw-bold" id="htotalControlesProceso">1</h2>
+                    </div>
+                    <i class="fa-solid fa-file-pen fa-2xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+
+
+</div>
+@*
+<div class="row">
+    <!-- Componente del Clima de Montevideo -->
+    <div class="col-md-6">
+        <h3>Clima en Uruguay</h3>
+        <br />
+
+        <iframe src="https://mapa.tutiempo.net/#-32.50513;-54.84924;7" scrolling="no" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true" style="border:1px solid black; padding:10; margin:10; width:500px; height:400px; overflow:hidden;"></iframe> 
+        <!-- Puedes insertar aquí una API de clima o un iframe -->
+    </div>
+    <!-- Componente del Valor del Dólar -->
+    <div class="col-md-6">
+     </div>
+</div>
+
+
+<div class="row">
+    <!-- Componente del Clima de Montevideo -->
+    <div class="col-md-12">
+        <h2>Noticias del sector</h2>
+        <p>En etapa de desarrollo...</p>
+        <!-- Puedes insertar aquí una API de clima o un iframe -->
+    </div>
+  
+</div> 
+
+<!-- Aquí podrías añadir el JavaScript para actualizar los valores -->
+<script>
+    // Ejemplo de cómo podrías actualizar el contenido con JavaScript
+    document.getElementById('dolar').innerText = '1 USD = 42 UYU';
+</script>*@
+
+@section Scripts {
+ 
+    <script src="~/lib/datatables2/js/moment.min.js"></script>
+    <script src="~/lib/datatables2/js/datatables.js"></script>
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script src="~/views/dashboard/dashboard.js"></script>
+    
+
+}

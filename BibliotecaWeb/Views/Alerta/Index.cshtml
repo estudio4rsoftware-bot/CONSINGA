@@ -1,0 +1,300 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@section Estilos {
+    <link href="~/lib/datatables2/css/datatables.datatables.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+
+}
+<h2 class="mt-4 mb-4">Monitoreo</h2>
+
+<P>
+    Esta funcionalidad te permitirá monitorear cambios en la Propiedad, Tenencia y/o Lugar Físico de cualquier conjunto de caravanas de interés. Durante el período solicitado recibirás notificaciones en caso de cambios en alguno de estos atributos.
+    </P>
+
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-chart-bar me-1"></i>
+                Monitoreo
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <button class="btn btn-outline-success" id="btnNuevaCaravana">Nuevo Monitoreo</button>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="display" id="tbAlerta" cellspacing="0" style="width:100%">
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+@* <div class="row">
+    <div class="text-center mt-4">
+        <ul class="nav nav-tabs justify-content-end">
+            <li class="nav-item">
+                <a class="nav-link active" id="pestaña1-tab" data-toggle="tab" href="#caravanas" role="tab">CARAVANAS</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="pestaña2-tab" data-toggle="tab" href="#grupo" role="tab">GRUPO</a>
+            </li>
+            
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade show active mt-3" id="caravanas" role="tabpanel">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-bar me-1"></i>
+                                    Histórico de monitoreos
+                                </div>
+                                <div class="card-body">
+                                   
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="col-sm-12">
+                                                <table class="display" id="tbAlerta" cellspacing="0" style="width:100%">
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade mt-3" id="grupo" role="tabpanel">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-bar me-1"></i>
+                                    Histórico de monitoreos agrupados por etiqueta
+                                </div>
+                                <div class="card-body">
+
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="col-sm-12">
+                                                <table class="display" id="tbAlertasAgrupadas" cellspacing="0" style="width:100%">
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+          
+        </div>
+    </div>
+</div> *@
+
+<!-- Incluye Bootstrap JS y dependencias -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+<div class="modal fade" id="mdAlerta" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Monitoreo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>
+                        <i class="fas fa-chart-bar me-1"></i>
+                        <b>    Datos generales</b>
+                    </p>
+                    <div class="col-sm-6">
+                        <label class="col-form-label">
+                            Etiqueta:
+                        </label>
+                        <input type="text" class="form-control" id="txtEtiqueta" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Duración del monitoreo:</label>
+                        <select id="cboFrecuencia" class="form-control" data-width="100%"></select>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                   
+                    <p>
+                        <br />
+                        <i class="fas fa-file-text-o "></i>
+                        <b>Ingreso individual o masivo</b>
+                        
+                    </p>
+                   
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Número de caravana:</label>
+                        <input type="text" class="form-control" id="txtNroCaravana" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Lectura de ganado (.txt o .csv):</label>
+                        <input type="file" class="form-control" id="fileLecturaCaravana" autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="row">
+                    
+                    <p>
+                        <br />
+                        <i class="fas fa-dollar-sign me-1"></i>
+                        <b> Metricas financieras (USD)</b>
+                        <br />
+                        Puedes llevar un control detallado de los riesgos asumidos
+                    </p>
+                   
+                   
+                    
+                    <div class="col-sm-6">
+                        <label class="col-form-label"> Cantidad de unidades a monitorear:</label>
+                        <input type="text" class="form-control" id="txtCantidadCaravanas" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Valor de unidad individual (USD):</label>
+                        <input type="text" class="form-control" id="txtValorCaravanas" autocomplete="off">
+                    </div>
+                </div>
+
+             
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="mdVerAlerta" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Ver Alerta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Nro de Caravana:</label>
+                        <input type="text" class="form-control" id="txtNroCaravanaVer" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Frecuencia:</label>
+                        <input type="text" class="form-control" id="txtFrecuenciaVer" autocomplete="off">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Fecha Inicio:</label>
+                        <input type="text" class="form-control" id="txtFechaInicioVer" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Fecha Fin:</label>
+                        <input type="text" class="form-control" id="txtFechaFinVer" autocomplete="off">
+                    </div>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col-sm-6">
+                        <label class="col-form-label"><b>ACTUAL</b></label>
+                   
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label"><b>ANTERIOR</b></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Tenencia:</label>
+                        <input type="text" class="form-control" id="txtTenenciaActualVer" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Tenencia:</label>
+                        <input type="text" class="form-control" id="txtTenenciaAnteriorVer" autocomplete="off">
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Lugar fisico:</label>
+                        <input type="text" class="form-control" id="txtLugarFisicoActualVer" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Lugar fisico:</label>
+                        <input type="text" class="form-control" id="txtLugarFisicoAnteriorVer" autocomplete="off">
+                    </div>
+                </div>
+
+              
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Propiedad:</label>
+                        <input type="text" class="form-control" id="txtPropiedadActualVer" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Propiedad:</label>
+                        <input type="text" class="form-control" id="txtPropiedadAnteriorVer" autocomplete="off">
+                    </div>
+                </div>
+                <div class="row">
+                   
+                    <div class="col-sm-6">
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/lib/datatables2/js/moment.min.js"></script>
+    <script src="~/lib/datatables2/js/datatables.js"></script>
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script src="~/views/Alerta/Alerta.js"></script>
+
+}
+    

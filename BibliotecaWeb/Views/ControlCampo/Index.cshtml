@@ -1,0 +1,149 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@section Estilos {
+    <link href="~/lib/datatables2/css/datatables.datatables.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+}
+<h2 class="mt-4 mb-4">Control de Campo</h2>
+<p> Esta funcionalidad permite optimizar tiempos, esfuerzos y errores involuntarios asociados a la verificación de la Propiedad, Tenencia y /o Lugar Físico de cualquier lectura de ganado. </p>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-chart-bar me-1"></i>
+                Histórico de Control de Campo  <i class="fas fa-question-circle-o" aria-hidden="true" title="Crea un Nuevo Control y adjunta un .txt o .csv con números de caravana (incluso directamente desde el bastón de lectura) para generar un reporte con información  de cada una."></i>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <button class="btn btn-outline-success" id="btnNuevoControl">Nuevo control</button>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="display dt-ordering-desc" id="tbControl" cellspacing="0" style="width:100%">
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdControl" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Nuevo Control de Campo</h5>
+               
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>
+                        CONSIGNA te ayuda a realizar tus controles de campo rápidamente. Simplemente selecciona el archivo de lectura de ganado para recibir información detallada
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Archivo de lectura de ganado (.txt o .csv):</label>  <br />
+                        <input type="file" class="form-control" id="txtArchivo" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Etiqueta:</label>
+                        <i class="fa fa-question-circle-o" aria-hidden="true" title="Es el nombre con el que identificarás este control de campo en el registro histórico"></i> <br />
+                        <input type="text" class="form-control" id="txtNombre" autocomplete="off" accept=".txt">
+                    </div>
+                </div>
+                @* 
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="col-form-label">SEGUIMIENTO DE CARAVANAS</p>
+                        <label class="col-form-label"> ¿Deseas activar el monitoreo?: Si <input type="checkbox" checked id="boolAlerta"></label>
+                        <i class="fa fa-question-circle-o" aria-hidden="true" title="Podrás gestionar las notificaciones desde el módulo Monitoreo"></i>
+                        <p class="col-form-label">Recibe una notificación ante cambios de propiedad, tenencia o lugar físico de las caravanas incluidas en este control de campo</p>
+                    </div>
+                   
+                  
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Duración del monitoreo:</label>
+                        <i class="fa fa-question-circle-o" aria-hidden="true" title="Selecciona la duración por la que se controlarán cambios en este grupo de caravanas"></i>
+                        <select id="cboFrecuencia" class="form-control" data-width="100%"></select>
+                    </div>
+                </div>*@
+            </div>
+            <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="mdControlVisualizar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Nuevo Control de Campo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Fecha y hora ingreso:</label>  <br />
+                        <input type="text" class="form-control" id="txtVerFecha" autocomplete="off" >
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="col-form-label">Estado actual:</p>
+                        <input type="text" class="form-control" id="txtVerEstado" autocomplete="off" readonly>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Nombre:</label>  <br />
+                        <input type="text" class="form-control" id="txtVerNombre" autocomplete="off" readonly>
+                        
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="col-form-label"> Identificador interno: </p>
+                        <input type="text" class="form-control" id="txtVerIdControl" autocomplete="off" readonly>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="col-form-label">Comentarios:</label>  <br />
+                        <input type="text" class="form-control" id="txtVerComentarios" autocomplete="off" readonly>
+
+                    </div>
+                 
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts {
+    <script src="~/lib/datatables2/js/moment.min.js"></script>
+    <script src="~/lib/datatables2/js/datatables.js"></script>
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script src="~/views/ControlCampo/ControlCampo.js"></script>
+}
