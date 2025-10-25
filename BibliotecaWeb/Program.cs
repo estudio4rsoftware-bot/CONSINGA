@@ -21,7 +21,9 @@ builder.Services.AddScoped<IAntecedenteRepositorio, AntecedenteRepositorio>();
 builder.Services.AddScoped<IControlCampoRepositorio, ControlCampoRepositorio>();
 builder.Services.AddScoped<IAlertaRepositorio, AlertaRepositorio>();
 builder.Services.AddScoped<IFrecuenciaAlertaRepositorio, FrecuenciaAlertaRepositorio>();
-
+builder.Services.AddScoped<IPaisRepositorio, PaisRepositorio>();
+builder.Services.AddScoped<ITipoDocumentoRepositorio, TipoDocumentoRepositorio>();
+builder.Services.AddScoped<IPerfilCrediticioRepositorio, PerfilCrediticioRepositorio>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(option =>

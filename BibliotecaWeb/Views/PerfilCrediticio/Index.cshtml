@@ -1,0 +1,194 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@section Estilos {
+    <link href="~/lib/datatables2/css/datatables.datatables.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+}
+<h2 class="mt-4 mb-4">Admisión</h2>
+<p> Under construction. </p>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-chart-bar me-1"></i>
+                Histórico de Perfil Crediticio  <i class="fas fa-question-circle-o" aria-hidden="true" title="Crea un Nuevo Perfil Crediticio [por definir]."></i>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <button class="btn btn-outline-success" id="btnNuevoAnalisis">Nuevo análisis</button>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="display dt-ordering-desc" id="tbControl" cellspacing="0" style="width:100%">
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdPerfil" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Nuevo análisis</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>
+                        <i class="fas fa-chart-bar me-1"></i>
+                        <b>    Consulta deudas</b>
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">
+                            Periodo/fecha <b>[AAAAMM]</b>
+                        </label>
+                        <input type="text" class="form-control" id="txtPeriodo" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label">
+                            Pais
+                        </label>                        
+                        <select id="cboPais" class="form-select" data-width="100%"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">
+                            Tipo documento
+                        </label>
+                        <select id="cboTipoDocumento" class="form-select" data-width="100%"></select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label">
+                            Número
+                        </label>
+                        <input type="text" class="form-control" id="txtNumero" autocomplete="off"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdPerfilVerResultado" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Resultado análisis</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Nombre</label>  <br />
+                        <input type="text" class="form-control" id="txtVerNombre" autocomplete="off" readonly>
+                        <input type="hidden" id="hdnIdPerfilCrediticio" value="0" />
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="col-form-label">Semaforo</label>  <br />
+                            <select id="cboVerSemaforo" class="form-select" data-width="100%">
+                                <option value="Seleccionar" selected>Seleccionar</option>
+                                <option value="No asignado">No asignado</option>
+                                <option value="Verde">Verde</option>
+                                <option value="Amarillo">Amarillo</option>
+                                <option value="Rojo">Rojo</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>                
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="col-form-label">Observaciones:</label>  <br />
+                        <textarea class="form-control" id="txtVerObservaciones" autocomplete="off" rows="3" style="resize: none;"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="display dt-ordering-desc" id="tbCalificacionInstitucion" cellspacing="0" style="width:100%">
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="btnVerGuardar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdPerfilClonar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Clonar análisis</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>
+                        <i class="fas fa-chart-bar me-1"></i>
+                        <b>    Consulta deudas</b>
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">
+                            Periodo/fecha <b>[AAAAMM]</b>
+                        </label>
+                        <input type="text" class="form-control" id="txtClonarPeriodo" autocomplete="off">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label">
+                            Pais
+                        </label>
+                        <select id="cboClonarPais" class="form-select" data-width="100%"></select>
+                        @* <input type="hidden" name="paisSelected" value="0" /> *@
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">
+                            Tipo documento
+                        </label>
+                        <select id="cboClonarTipoDocumento" class="form-select" data-width="100%"></select>
+                        @* <input type="hidden" name="tipoDocumentoSelected" value="0" /> *@
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-form-label">
+                            Número
+                        </label>
+                        <input type="text" class="form-control" id="txtClonarNumero" autocomplete="off" readonly/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="btnClonar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/datatables2/js/moment.min.js"></script>
+    <script src="~/lib/datatables2/js/datatables.js"></script>
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script src="~/views/PerfilCrediticio/PerfilCrediticio.js"></script>
+}
