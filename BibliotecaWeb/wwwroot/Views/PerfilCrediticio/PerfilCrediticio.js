@@ -160,7 +160,7 @@ function Eliminar(idPerfilCrediticio) {
         cancelButtonText: "No, volver"
     }).then((result) => {
         if (result.isConfirmed) {
-            fetch(`/PerfilCrediticio/Eliminar?idPerfilCrediticio=${idPerfilCrediticio}`, {
+            fetch(`./PerfilCrediticio/Eliminar?idPerfilCrediticio=${idPerfilCrediticio}`, {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json;charset=utf-8' }
             }).then(response => {
@@ -204,7 +204,19 @@ function Clonar(idPerfilCrediticio) {
 
 $("#btnNuevoAnalisis").on("click", function () {
     $('#mdPerfil').modal('show');
+    limpiarCampos();
 })
+
+$('#txtPeriodo').on('input', function () {
+    // Remove any non-digit characters
+    this.value = this.value.replace(/\D/g, '');
+});
+
+$('#txtClonarPeriodo').on('input', function () {
+    // Remove any non-digit characters
+    this.value = this.value.replace(/\D/g, '');
+});
+
 
 $("#cboPais").on("change", function () {
     var selectedValue = $(this).val();
@@ -218,6 +230,18 @@ $("#btnGuardar").on("click", function () {
         Swal.fire({
             title: "Error!",
             text: "Debe ingresar un periodo/fecha.",
+            icon: "warning"
+        });
+        return;
+    }
+
+    // Regular expression to validate the format YYYYMM
+    var regex = /^(19|20)\d{2}(0[1-9]|1[0-2])$/;
+
+    if (!regex.test(txtPeriodo)) {
+        Swal.fire({
+            title: "Error!",
+            text: "El formato de fecha es incorrecto. Use AAAAMM.",
             icon: "warning"
         });
         return;
@@ -322,7 +346,7 @@ $("#btnVerGuardar").on("click", function () {
     }
 
     fetch(`./PerfilCrediticio/Actualizar`, {
-        method: "PUT",
+        method: "POST",
         headers: { 'Content-Type': 'application/json;charset=utf-8' },
         body: JSON.stringify(perfilActualizado)
     }).then(response => {
@@ -442,6 +466,18 @@ $("#btnClonar").on("click", function () {
         return;
     }
 
+    // Regular expression to validate the format YYYYMM
+    var regex = /^(19|20)\d{2}(0[1-9]|1[0-2])$/;
+
+    if (!regex.test(txtPeriodo)) {
+        Swal.fire({
+            title: "Error!",
+            text: "El formato de fecha es incorrecto. Use AAAAMM.",
+            icon: "warning"
+        });
+        return;
+    }
+
     var pais = $("#cboClonarPais").val();
     if (pais == 0) {
         Swal.fire({
@@ -511,7 +547,7 @@ $("#btnClonar").on("click", function () {
 
 function limpiarCampos() {
     $("#txtPeriodo").val("");
-    $("#cboPais").val(0);
+    $("#cboPais").val("");
     $("#cboTipoDocumento").empty().append($("<option>").val(0).text("Seleccionar"));
     $("#txtNumero").val("");
 }

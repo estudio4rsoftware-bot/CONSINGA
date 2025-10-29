@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    fetch(`./Home/Dashboard`, {
+    fetch(`/campor/Home/Dashboard`, {
         method: "GET",
         headers: { 'Content-Type': 'application/json;charset=utf-8' }
     }).then(response => {
