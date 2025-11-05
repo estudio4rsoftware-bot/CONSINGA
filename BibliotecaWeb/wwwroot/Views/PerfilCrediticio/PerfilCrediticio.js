@@ -160,7 +160,7 @@ function Eliminar(idPerfilCrediticio) {
         cancelButtonText: "No, volver"
     }).then((result) => {
         if (result.isConfirmed) {
-            fetch(`/PerfilCrediticio/Eliminar?idPerfilCrediticio=${idPerfilCrediticio}`, {
+            fetch(`./PerfilCrediticio/Eliminar?idPerfilCrediticio=${idPerfilCrediticio}`, {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json;charset=utf-8' }
             }).then(response => {
@@ -322,7 +322,7 @@ $("#btnVerGuardar").on("click", function () {
     }
 
     fetch(`./PerfilCrediticio/Actualizar`, {
-        method: "PUT",
+        method: "POST",
         headers: { 'Content-Type': 'application/json;charset=utf-8' },
         body: JSON.stringify(perfilActualizado)
     }).then(response => {

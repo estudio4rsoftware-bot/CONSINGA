@@ -115,7 +115,7 @@ namespace BibliotecaWeb.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> Actualizar([FromBody] PerfilCrediticioActualizarDTO perfil)
         {
             var resultado = await _perfilCrediticioRepositorio.Actualizar(perfil);
