@@ -58,7 +58,7 @@
                     <div class="col-sm-6">
                         <label class="col-form-label">
                             Pais
-                        </label>                        
+                        </label>
                         <select id="cboPais" class="form-select" data-width="100%"></select>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                         <label class="col-form-label">
                             Número
                         </label>
-                        <input type="text" class="form-control" id="txtNumero" autocomplete="off"/>
+                        <input type="text" class="form-control" id="txtNumero" autocomplete="off" />
                     </div>
                 </div>
             </div>
@@ -98,20 +98,39 @@
                         <label class="col-form-label">Nombre</label>  <br />
                         <input type="text" class="form-control" id="txtVerNombre" autocomplete="off" readonly>
                         <input type="hidden" id="hdnIdPerfilCrediticio" value="0" />
+                    </div>                    
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="col-form-label">Plazo de negocio (días)</label> <i class="fas fa-question-circle-o" id="popoverIconPlazo"></i> <br />
+                        <input type="text" class="form-control" id="txtPlazoNegocio" autocomplete="off">
                     </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label class="col-form-label">Semaforo</label>  <br />
-                            <select id="cboVerSemaforo" class="form-select" data-width="100%">
-                                <option value="Seleccionar" selected>Seleccionar</option>
-                                <option value="No asignado">No asignado</option>
-                                <option value="Verde">Verde</option>
-                                <option value="Amarillo">Amarillo</option>
-                                <option value="Rojo">Rojo</option>
-                            </select>
+                    <div class="col-sm-4">
+                        <label class="col-form-label">No. Operación asociado</label> <i class="fas fa-question-circle-o" id="popoverIconNoOperacion"></i> <br />
+                        <input type="text" class="form-control" id="txtNoOperacionAsociado" autocomplete="off">
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="col-form-label">Valor asociado (USD)</label> <i class="fas fa-question-circle-o" id="popoverIconValorAsociado"></i> <br />
+                        <input type="text" class="form-control" id="txtValorAsociado" autocomplete="off">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="col-form-label">Semáforo</label>  <br />
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Rojo">
+                            <label class="form-check-label" for="inlineRadio1" style="color:red"><b>Rojo</b></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="Amarillo">
+                            <label class="form-check-label" for="inlineRadio2" style="color:#B3B325"><b>Amarillo</b></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="Verde">
+                            <label class="form-check-label" for="inlineRadio3" style="color:green"><b>Verde</b></label>
                         </div>
                     </div>
-                </div>                
+                </div>
                 <div class="row">
                     <div class="col-sm-12">
                         <label class="col-form-label">Observaciones:</label>  <br />
@@ -120,7 +139,16 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <table class="display dt-ordering-desc" id="tbCalificacionInstitucion" cellspacing="0" style="width:100%">
+                        <table class="table table-responsive table-striped" id="tbCalificacionInstitucion" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Nombre del Banco</th>
+                                    <th>Calificación</th>
+                                </tr>
+                            </thead>
+                            <tbody id="CalificacionTableBody">
+                                <!-- Dynamic rows will be inserted here -->
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -174,7 +202,7 @@
                         <label class="col-form-label">
                             Número
                         </label>
-                        <input type="text" class="form-control" id="txtClonarNumero" autocomplete="off" readonly/>
+                        <input type="text" class="form-control" id="txtClonarNumero" autocomplete="off" readonly />
                     </div>
                 </div>
             </div>

@@ -20,12 +20,7 @@ $(document).ready(function () {
         },
         "columns": [
             {
-                title: "", "data": "nombre", width: "5%", render: function (data, type, row) {
-                    return `<i class="fa fa-user" title="${data}"></i>`
-                }
-            },
-            {
-                title: "", "data": "idPerfilCrediticio", width: "20%", render: function (data, type, row) {
+                title: "Acciones", "data": "idPerfilCrediticio", width: "20%", render: function (data, type, row) {
                     let disabled = row.estado == "Finalizado" ? "" : "disabled";
                     return `<button type="button" class="btn btn-sm btn-outline-success me-1" onclick="Descargar(${data});"><i class="fas fa-file-download" title="Descargar resultado del análisis"></i></button>` +
                         `<button type="button" class="btn btn-sm btn-outline-warning me-1" onclick="VerResultado(${data});"><i class="fa-solid fa-cloud-arrow-up" title="Ver resultado de análisis"></i></button>` +
@@ -37,10 +32,19 @@ $(document).ready(function () {
                 title: "Fecha Control", "data": "fechaCreacion", render: function (data, type, row) {
                     if (!data) return "";
                     let fecha = new Date(data);
-                    return fecha.toLocaleString();
+                    return fecha.toLocaleDateString();
                 }
             },
             { title: "Nombre", "data": "nombre" },
+            {
+                title: "Fecha vencimiento", "data": "fechaVencimiento", render: function (data, type, row) {
+                    if (!data) return "";
+                    let fecha = new Date(data);
+                    return fecha.toLocaleDateString();
+                }
+            },
+            { title: "Operacion asociada", "data": "operacionAsociada" },
+            { title: "Monto asociado", "data": "montoAsociado" },
             { title: "Numero", "data": "numero" },
             {
                 title: "Estado", "data": "estado", render: function (data, type, row) {
@@ -96,49 +100,14 @@ function Descargar(idPerfilCrediticio) {
 
 function VerResultado(idPerfilCrediticio) {
 
-    $('#mdPerfilVerResultado').modal('show');
-    $('#txtVerNombre').val("");
-    $('#cboVerSemaforo').val("Seleccionar");
-    $('#txtVerObservaciones').val("");
-
     fetch(`./PerfilCrediticio/ListaCalificacion?idPerfilCrediticio=${idPerfilCrediticio}`, {
         method: "GET"
     }).then(response => {
         return response.ok ? response.json() : Promise.reject(response);
     }).then(responseJson => {
         if (responseJson.data) {
-
-            $('#txtVerNombre').val(responseJson.data.nombre);
-            $('#hdnIdPerfilCrediticio').val(responseJson.data.idPerfilCrediticio);
-
-            if (responseJson.data.semaforo != "Pendiente")
-                $('#cboVerSemaforo').val(responseJson.data.semaforo);
-
-            if (responseJson.data.observaciones != "Pendiente")
-                $('#txtVerObservaciones').val(responseJson.data.observaciones);
-
-            if ($.fn.DataTable.isDataTable('#tbCalificacionInstitucion')) {
-                $('#tbCalificacionInstitucion').DataTable().clear().destroy();
-            }
-
-            $('#tbCalificacionInstitucion').DataTable({
-                responsive: true,
-                autoWidth: true,
-                scrollX: true,
-                data: responseJson.data.calificaciones,
-                "columns": [
-                    { title: "Nombre del Banco", "data": "banco" },
-                    { title: "Calificación", "data": "calificacion" }
-                ],
-                language: {
-                    url: "https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"
-                },
-                searching: false,
-                lengthChange: false,
-                pageLength: 5,
-                ordering: false,
-            });
-
+            $('#mdPerfilVerResultado').modal('show');
+            loadControlsInModalVerResultado(responseJson.data);
         }
     }).catch((error) => {
         Swal.fire({
@@ -146,7 +115,7 @@ function VerResultado(idPerfilCrediticio) {
             text: "No se encontraron coincidencias. Error de Servidor",
             icon: "warning"
         });
-    })    
+    })
 }
 
 function Eliminar(idPerfilCrediticio) {
@@ -213,6 +182,21 @@ $('#txtPeriodo').on('input', function () {
 });
 
 $('#txtClonarPeriodo').on('input', function () {
+    // Remove any non-digit characters
+    this.value = this.value.replace(/\D/g, '');
+});
+
+$('#txtPlazoNegocio').on('input', function () {
+    // Remove any non-digit characters
+    this.value = this.value.replace(/\D/g, '');
+});
+
+$('#txtNoOperacionAsociado').on('input', function () {
+    // Remove any non-digit characters
+    this.value = this.value.replace(/\D/g, '');
+});
+
+$('#txtValorAsociado').on('input', function () {
     // Remove any non-digit characters
     this.value = this.value.replace(/\D/g, '');
 });
@@ -317,9 +301,39 @@ $("#btnGuardar").on("click", function () {
 
 $("#btnVerGuardar").on("click", function () {
 
-    var idPerfil = $("#hdnIdPerfilCrediticio").val();    
+    var idPerfil = $("#hdnIdPerfilCrediticio").val();
 
-    var semaforo = $("#cboVerSemaforo").val();
+    var plazoNegocio = $("#txtPlazoNegocio").val();
+    if (plazoNegocio == "") {
+        Swal.fire({
+            title: "Error!",
+            text: "Debe ingresar el plazo del negocio.",
+            icon: "warning"
+        });
+        return;
+    }
+
+    var numeroOperacion = $("#txtNoOperacionAsociado").val();
+    if (numeroOperacion == "") {
+        Swal.fire({
+            title: "Error!",
+            text: "Debe ingresar el número de operación asociado.",
+            icon: "warning"
+        });
+        return;
+    }
+
+    var valorAsociado = $("#txtValorAsociado").val();
+    if (valorAsociado == "") {
+        Swal.fire({
+            title: "Error!",
+            text: "Debe ingresar el valor asociado.",
+            icon: "warning"
+        });
+        return;
+    }
+
+    var semaforo = document.querySelector('input[name="inlineRadioOptions"]:checked')?.value || 0;
     if (semaforo == 0) {
         Swal.fire({
             title: "Error!",
@@ -341,6 +355,9 @@ $("#btnVerGuardar").on("click", function () {
 
     const perfilActualizado = {
         idPerfilCrediticio: idPerfil,
+        plazoNegocio: plazoNegocio,
+        numeroOperacion: numeroOperacion,
+        valorAsociado: valorAsociado,
         semaforo: semaforo,
         observaciones: observaciones
     }
@@ -550,4 +567,94 @@ function limpiarCampos() {
     $("#cboPais").val("");
     $("#cboTipoDocumento").empty().append($("<option>").val(0).text("Seleccionar"));
     $("#txtNumero").val("");
+}
+
+function loadControlsInModalVerResultado(data) {
+
+    loadPopovers();
+    $('#txtVerNombre').val("");
+    $('#cboVerSemaforo').val("Seleccionar");
+    $('#txtVerObservaciones').val("");
+
+    $('#txtVerNombre').val(data.nombre);
+    $('#hdnIdPerfilCrediticio').val(data.idPerfilCrediticio);
+    $('#txtPlazoNegocio').val(data.plazoNegocio);
+    $('#txtNoOperacionAsociado').val(data.numeroOperacion);
+    $('#txtValorAsociado').val(data.valorAsociado);
+
+    document.querySelectorAll('input[name="inlineRadioOptions"]').forEach(radio => {
+        radio.checked = false;
+    });
+
+    if (data.semaforo != "Pendiente") {
+        var savedRadio = document.querySelector(`input[name="inlineRadioOptions"][value="${data.semaforo}"]`);
+        savedRadio.checked = true;
+    }
+
+    if (data.observaciones != "Pendiente")
+        $('#txtVerObservaciones').val(data.observaciones);
+
+    // Clear any previous rows in the table
+    const tableBody = document.getElementById('CalificacionTableBody');
+    tableBody.innerHTML = '';
+
+    // Check if there are records
+    if (data.calificaciones && data.calificaciones.length > 0) {
+
+        // Insert rows into the table
+        data.calificaciones.forEach(calificacion => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                        <td>${calificacion.banco}</td>
+                        <td>${calificacion.calificacion}</td>
+                    `;
+            tableBody.appendChild(row);
+        });
+    } else {
+        // If no records, show "No records" row
+        const noRecordsRow = document.createElement('tr');
+        noRecordsRow.innerHTML = `
+                                <td colspan="2" class="text-center">No records</td>
+                            `;
+        tableBody.appendChild(noRecordsRow);
+    }
+}
+
+function loadPopovers() {
+
+    $('#popoverIconPlazo').popover({
+        trigger: 'hover',  // Show the popover on hover
+        html: true,  // Allow HTML content inside the popover
+        placement: 'right',  // Place the popover to the right of the icon
+        content: `
+        <p>Si estás analizando el otorgamiento de un crédito, puedes identificar el plazo asociado a un negocio para organizar los vencimientos.</p>
+        <p>El dato ingresado se mostrará en la <b>columna "Fecha de vencimiento"</b> dentro del módulo Perfil Crediticio.</p>
+        <p>Si no corresponde o no cuentas con el dato, indica "0" en la casilla.</p>
+      `,
+        title: "Disclaimer"
+    });
+
+    $('#popoverIconNoOperacion').popover({
+        trigger: 'hover',  // Show the popover on hover
+        html: true,  // Allow HTML content inside the popover
+        placement: 'right',  // Place the popover to the right of the icon
+        content: `
+        <p>Si estás analizando el otorgamiento de un crédito, puedes identificar el plazo asociado a un negocio para organizar los vencimientos.</p>
+        <p>El dato ingresado se mostrará en la <b>columna "Operación asociada"</b> dentro del módulo Perfil Crediticio.</p>
+        <p>Si no corresponde o no cuentas con el dato, indica "0" en la casilla.</p>
+      `,
+        title: "Disclaimer"
+    });
+
+    $('#popoverIconValorAsociado').popover({
+        trigger: 'hover',  // Show the popover on hover
+        html: true,  // Allow HTML content inside the popover
+        placement: 'right',  // Place the popover to the right of the icon
+        content: `
+        <p>Si estás analizando el otorgamiento de un crédito, puedes identificar el plazo asociado a un negocio para organizar los vencimientos.</p>
+        <p>El dato ingresado se mostrará en la <b>columna "Monto asociado"</b> dentro del módulo Perfil Crediticio.</p>
+        <p>Si no corresponde o no cuentas con el dato, indica "0" en la casilla.</p>
+      `,
+        title: "Disclaimer"
+    });
 }
