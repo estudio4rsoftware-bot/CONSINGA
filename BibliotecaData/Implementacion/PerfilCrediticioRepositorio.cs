@@ -68,6 +68,9 @@ namespace BibliotecaData.Implementacion
                             IdTipoDocumento = Convert.ToInt32(dr["IdTipoDocumento"]),
                             TipoDescripcion = dr["TipoDescripcion"].ToString()!,
                             Nombre = dr["Nombre"].ToString()!,
+                            FechaVencimiento = Convert.ToDateTime(dr["FechaVencimiento"]),
+                            OperacionAsociada = Convert.ToInt32(dr["OperacionAsociada"]),
+                            MontoAsociado = Convert.ToInt32(dr["MontoAsociado"]),
                             Semaforo = dr["Semaforo"].ToString()!,
                             Estado = dr["Estado"].ToString()!,
                             FechaCreacion = Convert.ToDateTime(dr["FechaCreacion"])
@@ -178,6 +181,9 @@ namespace BibliotecaData.Implementacion
                         {
                             IdPerfilCrediticio = Convert.ToInt32(dr["IdPerfilCrediticio"]),
                             Nombre = dr["Nombre"].ToString()!,
+                            PlazoNegocio = Convert.ToInt32(dr["PlazoNegocio"]),
+                            NumeroOperacion = Convert.ToInt32(dr["NumeroOperacion"]),
+                            ValorAsociado = Convert.ToInt32(dr["ValorAsociado"]),
                             Semaforo = dr["Semaforo"].ToString()!,
                             Observaciones = dr["Observaciones"].ToString()!,
                             Calificaciones = string.IsNullOrWhiteSpace(jsonCalificaciones) ?
@@ -202,6 +208,9 @@ namespace BibliotecaData.Implementacion
                     await conexion.OpenAsync();
                     SqlCommand cmd = new SqlCommand("sp_ActualizarPerfilCrediticio", conexion);
                     cmd.Parameters.AddWithValue("@IdPerfilCrediticio", perfil.IdPerfilCrediticio);
+                    cmd.Parameters.AddWithValue("@PlazoNegocio", perfil.PlazoNegocio);
+                    cmd.Parameters.AddWithValue("@NumeroOperacion", perfil.NumeroOperacion);
+                    cmd.Parameters.AddWithValue("@ValorAsociado", perfil.ValorAsociado);
                     cmd.Parameters.AddWithValue("@Semaforo", perfil.Semaforo);
                     cmd.Parameters.AddWithValue("@Observaciones", perfil.Observaciones);
                     cmd.CommandType = CommandType.StoredProcedure;

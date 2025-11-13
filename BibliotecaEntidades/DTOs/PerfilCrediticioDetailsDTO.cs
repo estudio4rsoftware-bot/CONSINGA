@@ -7,6 +7,9 @@
         public int IdTipoDocumento { get; set; }
         public string TipoDescripcion { get; set; } = string.Empty;
         public string Nombre { get; set; } = string.Empty;
+        public DateTime FechaVencimiento { get; set; }
+        public int OperacionAsociada { get; set; }
+        public int MontoAsociado { get; set; }
         public string Semaforo { get; set; } = string.Empty;
         public string Estado { get; set; } = string.Empty;
         public DateTime FechaCreacion { get; set; }
