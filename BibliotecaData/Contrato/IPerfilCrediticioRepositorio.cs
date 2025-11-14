@@ -12,5 +12,6 @@ namespace BibliotecaData.Contrato
         Task<int> Eliminar(int idPerfil);
         Task<PerfilCrediticioClonarDTO> Obtener(int idPerfil);
         Task<PerfilCrediticioCalificacionDTO> ListaCalificacion(int idPerfil);
+        Task<PerfilCrediticioMediaDTO> DescargarImagen(int idPerfil);
     }
 }

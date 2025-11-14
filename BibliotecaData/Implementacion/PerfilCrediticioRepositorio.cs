@@ -225,5 +225,29 @@ namespace BibliotecaData.Implementacion
 
             return resultado;
         }
+
+        public async Task<PerfilCrediticioMediaDTO> DescargarImagen(int idPerfil)
+        {
+            PerfilCrediticioMediaDTO perfilMedia = null;
+            using (var conexion = new SqlConnection(con.CadenaSQL))
+            {
+                await conexion.OpenAsync();
+                SqlCommand cmd = new SqlCommand("sp_DescargarImagenPerfilCrediticio", conexion);
+                cmd.Parameters.AddWithValue("@IdPerfilCrediticio", idPerfil);
+                cmd.CommandType = CommandType.StoredProcedure;
+                using (var dr = await cmd.ExecuteReaderAsync())
+                {
+                    if (await dr.ReadAsync())
+                    {
+                        perfilMedia = new PerfilCrediticioMediaDTO()
+                        {
+                            Nombre = dr["Nombre"]?.ToString() ?? "",
+                            ImageBase64 = dr["Imagen"]?.ToString() ?? ""
+                        };
+                    }
+                }
+            }
+            return perfilMedia;
+        }
     }
 }

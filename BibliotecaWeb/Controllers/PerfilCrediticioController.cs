@@ -1,4 +1,5 @@
 ﻿using BibliotecaData.Contrato;
+using BibliotecaData.Helpers;
 using BibliotecaEntidades;
 using BibliotecaEntidades.DTOs;
 using Microsoft.AspNetCore.Mvc;
@@ -120,6 +121,23 @@ namespace BibliotecaWeb.Controllers
         {
             var resultado = await _perfilCrediticioRepositorio.Actualizar(perfil);
             return StatusCode(StatusCodes.Status200OK, new { data = resultado });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Descargar([FromQuery] int idPerfilCrediticio)
+        {
+            var perfilMedia = await _perfilCrediticioRepositorio.DescargarImagen(idPerfilCrediticio);
+
+            if (perfilMedia == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new { message = "Perfil crediticio inválido." });
+            }
+            return StatusCode(StatusCodes.Status200OK,
+                new
+                {
+                    imagen = perfilMedia.ImageBase64,
+                    nombre = CleanData.RemoveSpecialCharacters(perfilMedia.Nombre)
+                });
         }
     }
 }

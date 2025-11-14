@@ -95,7 +95,46 @@ $(document).ready(function () {
 });
 
 function Descargar(idPerfilCrediticio) {
-    alert("La descarga de los análisis esta en etapa de desarrollo");
+
+    fetch(`./PerfilCrediticio/Descargar?idPerfilCrediticio=${idPerfilCrediticio}`, {
+        method: "GET"
+    }).then(response => {
+        return response.ok
+            ? response.json()
+            : response.json().then(err => Promise.reject(err));
+    }).then(responseJson => {
+        if (responseJson.imagen) {
+
+            // Convert to data URL
+            var dataUrl = "data:image/jpg;base64," + responseJson.imagen;
+
+            // Create a download link and trigger it
+            var link = document.createElement('a');
+            link.href = dataUrl;
+
+            const d = new Date();
+            const dateStr = `${d.getDate().toString().padStart(2, "0")}${(d.getMonth() + 1).toString().padStart(2, "0")}${d.getFullYear()}`;
+
+            link.download = 'PerfilCrediticioDetalle_' + responseJson.nombre + '_' + dateStr + '.jpg';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        else {
+            Swal.fire({
+                title: "Error!",
+                text: "No hay imagenes disponibles para descargar.",
+                icon: "warning"
+            });
+        }
+    }).catch((error) => {
+        const msg = error?.message || "No se encontraron coincidencias. Error de Servidor.";
+        Swal.fire({
+            title: "Error!",
+            text: msg,
+            icon: "warning"
+        });
+    })
 }
 
 function VerResultado(idPerfilCrediticio) {
