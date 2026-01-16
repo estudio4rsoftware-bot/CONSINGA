@@ -4,7 +4,6 @@ let idSelectTipoDocumentoMdPerfil = "#cboTipoDocumento";
 let idSelectPaisMdPerfilClonar = "#cboClonarPais";
 let idSelectTipoDocumentoMdPerfilClonar = "#cboClonarTipoDocumento";
 
-
 $(document).ready(function () {
 
     obtenerPais(idSelectPaisMdPerfil);
@@ -213,6 +212,7 @@ function Clonar(idPerfilCrediticio) {
 $("#btnNuevoAnalisis").on("click", function () {
     $('#mdPerfil').modal('show');
     limpiarCampos();
+    precargarFiltrosNuevoAnalisis();
 })
 
 $('#txtPeriodo').on('input', function () {
@@ -608,6 +608,23 @@ function limpiarCampos() {
     $("#txtNumero").val("");
 }
 
+function precargarFiltrosNuevoAnalisis() {
+    const date = new Date();
+    date.setMonth(date.getMonth() - 1);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+
+    $("#txtPeriodo").val(`${year}${month}`);
+    var defaultPais = 4;
+    $("#cboPais").val(defaultPais);
+    var defaultTipoDocumento = 2;
+    obtenerTiposDocumento(defaultPais, idSelectTipoDocumentoMdPerfil)
+        .then(() => {
+            $("#cboTipoDocumento").val(defaultTipoDocumento);
+        });
+}
+
 function loadControlsInModalVerResultado(data) {
 
     loadPopovers();
@@ -628,6 +645,10 @@ function loadControlsInModalVerResultado(data) {
     if (data.semaforo != "Pendiente") {
         var savedRadio = document.querySelector(`input[name="inlineRadioOptions"][value="${data.semaforo}"]`);
         savedRadio.checked = true;
+    }
+
+    if (data.imagenBase64) {
+        $("#hdnImagenBase64").val(data.imagenBase64);
     }
 
     if (data.observaciones != "Pendiente")
@@ -697,3 +718,62 @@ function loadPopovers() {
         title: "Disclaimer"
     });
 }
+
+$("#btnAbrirImagen").on("click", function () {
+
+    var base64Image = $("#hdnImagenBase64").val();
+
+    if (!base64Image) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Imagen no disponible',
+            text: 'No hay una captura de pantalla para mostrar.'
+        });
+        return;
+    }
+
+    // Ensure proper Base64 format
+    if (!base64Image.startsWith("data:image")) {
+        base64Image = "data:image/png;base64," + base64Image;
+    }
+
+    var imageTab = window.open("", "_blank");
+
+    if (!imageTab) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Ventana bloqueada',
+            text: 'Por favor, habilita las ventanas emergentes para este sitio.'
+        });
+        return;
+    }
+
+    imageTab.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Captura de pantalla</title>
+            <meta charset="utf-8">
+            <style>
+                body {
+                    margin: 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    background: #f8f9fa;
+                }
+                img {
+                    max-width: 100%;
+                    max-height: 100%;
+                }
+            </style>
+        </head>
+        <body>
+            <img src="${base64Image}" alt="Captura de pantalla" />
+        </body>
+        </html>
+    `);
+
+    imageTab.document.close();
+});

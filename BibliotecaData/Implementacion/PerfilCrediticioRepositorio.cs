@@ -189,7 +189,8 @@ namespace BibliotecaData.Implementacion
                             Calificaciones = string.IsNullOrWhiteSpace(jsonCalificaciones) ?
                                             new List<CalificacionInstitucion>() :
                                             JsonSerializer.Deserialize<List<CalificacionInstitucion>>(jsonCalificaciones)
-                                            ?? new List<CalificacionInstitucion>()
+                                            ?? new List<CalificacionInstitucion>(),
+                            ImagenBase64 = dr["Imagen"]?.ToString() ?? ""
                         };
                     }
                 }

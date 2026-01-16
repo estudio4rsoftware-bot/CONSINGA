@@ -1,11 +1,13 @@
 ﻿using BibliotecaData.Contrato;
 using BibliotecaEntidades;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Security.Principal;
 
 namespace BibliotecaWeb.Controllers
 {
+    [Authorize]
     public class AlertaController : Controller
     {
         private readonly IAlertaRepositorio _repositorio;

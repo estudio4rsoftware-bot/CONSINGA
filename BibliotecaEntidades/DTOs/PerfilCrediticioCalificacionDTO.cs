@@ -16,5 +16,6 @@ namespace BibliotecaEntidades.DTOs
         public string Semaforo { get; set; } = String.Empty;
         public string Observaciones { get; set; } = String.Empty;
         public List<CalificacionInstitucion> Calificaciones { get; set; } = new List<CalificacionInstitucion>();
+        public string ImagenBase64 { get; set; } = string.Empty;
     }
 }

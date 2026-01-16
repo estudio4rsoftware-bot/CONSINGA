@@ -2,11 +2,13 @@
 using BibliotecaData.Helpers;
 using BibliotecaEntidades;
 using BibliotecaEntidades.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace BibliotecaWeb.Controllers
 {
+    [Authorize]
     public class PerfilCrediticioController : Controller
     {
         private readonly IPaisRepositorio _paisRepositorio;

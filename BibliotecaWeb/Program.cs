@@ -28,9 +28,9 @@ builder.Services.AddScoped<IPerfilCrediticioRepositorio, PerfilCrediticioReposit
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(option =>
     {
-        option.LoginPath = "/Acceso/Login";
-        option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+        option.LoginPath = "/Acceso/Login";        
         option.AccessDeniedPath = "/Acceso/Denegado";
+        option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
     });
 
 var app = builder.Build();
